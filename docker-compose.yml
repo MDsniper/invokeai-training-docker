@@ -1,0 +1,20 @@
+services:
+  invoke-training:
+    build: .
+    ports:
+      - "1234:1234"
+    volumes:
+      - ./data:/data
+      - ./output:/output
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
